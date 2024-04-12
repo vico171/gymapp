@@ -29,3 +29,4 @@ Route::post('/rutinas/eliminarlista/{id}', [RutinasController::class, 'destroy']
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/rutinas/buscar/', [RutinasController::class, 'search']);
 Route::get('/rutinas/{id}', [RutinasController::class, 'item']);
+Route::post('/register', [AuthController::class, 'register']);
