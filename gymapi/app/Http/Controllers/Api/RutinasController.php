@@ -87,6 +87,7 @@ class RutinasController extends Controller
             return response()->json(['error' => 'No se pudo eliminar el registro'], 500);
         }
     }
+    
 
     public function search(Request $request)
     {
@@ -112,6 +113,49 @@ class RutinasController extends Controller
         }
 
         return response()->json($list);
+    }
+
+    public function updateRutina(Request $request, $rutinaId)
+    {
+        try {
+            $rutina = Rutina::findOrFail($rutinaId);
+        
+            $validatedData = $request->validate([
+                'descripcion' => 'nullable|max:55',
+                'tiempo' => 'nullable',
+                'repeticiones' => 'nullable',
+            ]);
+    
+            $updated = false;
+    
+            if ($request->filled('descripcion')) {
+                $rutina->descripcion = $validatedData['descripcion'];
+                $updated = true;
+            }
+    
+            if ($request->filled('tiempo')) {
+                $rutina->tiempo = $validatedData['tiempo'];
+                $updated = true;
+            }
+    
+            if ($request->filled('repeticiones')) {
+                $rutina->repeticiones = $validatedData['repeticiones'];
+                $updated = true;
+            }
+    
+            if ($updated) {
+                $rutina->save();
+            }
+    
+            return response()->json([
+                'message' => $updated ? 'Rutina actualizada correctamente' : 'No se realizaron cambios',
+                'profile' => $rutina,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     

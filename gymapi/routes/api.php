@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ClienteController;
 use App\Http\Controllers\Api\RutinasController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 
 
@@ -30,3 +31,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/rutinas/buscar/', [RutinasController::class, 'search']);
 Route::get('/rutinas/{id}', [RutinasController::class, 'item']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/user/{id}', [UserController::class, 'item']);
+Route::put('/update/{id}', [RutinasController::class, 'updateRutina']);
