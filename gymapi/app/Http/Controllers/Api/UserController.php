@@ -22,5 +22,45 @@ class UserController extends Controller
         return response()->json($object);
     }
 
+    public function updatePerfil(Request $request, $perfilId)
+    {
+        try {
+            $perfil = User::findOrFail($perfilId);
+        
+            $validatedData = $request->validate([
+                'name' => 'nullable|max:55',
+                'email' => 'nullable',
+                
+            ]);
+    
+            $updated = false;
+    
+            if ($request->filled('name')) {
+                $perfil->name = $validatedData['name'];
+                $updated = true;
+            }
+    
+            if ($request->filled('email')) {
+                $perfil->email = $validatedData['email'];
+                $updated = true;
+            }
+    
+           
+    
+            if ($updated) {
+                $perfil->save();
+            }
+    
+            return response()->json([
+                'message' => $updated ? 'Perfil actualizado correctamente' : 'No se realizaron cambios',
+                'profile' => $perfil,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     
 }
